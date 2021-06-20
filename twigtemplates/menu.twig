@@ -1,0 +1,36 @@
+<style>
+    header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    a {
+        color: #003A66;
+        text-decoration: none;
+        margin: 0 5px;
+    }
+
+    a:first-of-type {
+        margin-left: 0;
+    }
+</style>
+<header>
+    <div>
+        <a href="/">Главная</a>
+        <a href="/products/catalog">Каталог</a>
+        <a href="/baskets">Корзина(<span id="allCount">{{ count ?: 0 }}</span>)</a>
+        <a href="/orders">Заказы</a>
+    </div>
+    <div>
+    {% if auth == true %}
+    Добро пожаловать, {{ username }} <a href="/auth/logout/"> [Выход]</a>
+    {% else %}
+    </div>
+<form action="/auth/login/" method="post">
+    <input type="text" name="login" placeholder="Логин">
+    <input type="text" name="password" placeholder="Пароль">
+    <input type="submit" name="submit" value="Войти">
+</form>
+    {% endif %}
+</header>

@@ -1,0 +1,22 @@
+<div class="cart">
+     {% if not cart %}
+    Корзина пуста!
+     {% endif  %}
+     {% for key in cart %}
+    <div>
+        <h3> {{key.title }}</h3>
+        <p>Цена: ${{ key.price }}</p>
+        <p>Количество: <span data-id="{{ key.id }}" class="quantity">{{ key.quantity }}</span></p>
+        <button data-id="{{ key.id }}" class="delete">Удалить</button>
+    </div>
+     {% endfor %}
+    {% if cart %}
+    <div style="display: flex; flex-direction: column; width: 300px;">
+        <form method="POST" id="order" action="javascript:null;">
+        <h2>Оформить заказ</h2>
+        <input type="text" placeholder="Телефон" style="width: 200px; margin-top: 10px" name="order_tel" required>
+        <button id="button__order" style="width: 200px; margin-top: 10px">Оформить!</button>
+        </form>
+    </div>
+    {% endif %}
+</div>

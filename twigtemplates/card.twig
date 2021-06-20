@@ -1,0 +1,12 @@
+<div>
+    <h3>{{ good.title }}</h3>
+    <p>Описание: {{ good.description }}</p>
+    <p>Стоимость: ${{ good.price }}</p>
+    <button data-id="{{ good.id }}" class="buy">Купить</button>
+    <h3>Отзывы</h3>
+    {% for review in reviews %}
+    <p>Имя: {{ review.name }}</p>
+    <p>Отзыв: {{ review.review }}</p>
+        <hr>
+    {% endfor %}
+</div>

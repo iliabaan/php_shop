@@ -1,0 +1,54 @@
+{% if auth == true %}
+<div>
+{% if is_admin == true %}
+<form method="post" action="">
+    <select name="order_type">
+        <option value="my_orders" {% if selected_orders == 'my_orders' %} selected {% endif %}>Мои заказы</option>
+        <option value="all_orders" {% if selected_orders == 'all_orders' %} selected {% endif %}>Все заказы</option>
+    </select>
+    <input type="submit" name="Показать" value="Показать">
+</form>
+{% endif %}
+    {% if not orders %}
+        Заказов пока нет!
+    {% endif  %}
+    {% for order in orders %}
+     <h4>Номер заказа: {{ order.id }}</h4>
+    {% set order_sum = 0 %}
+    <h5>Список заказа:</h5>
+    {% for product in order.order_list %}
+        <div>
+            <p>Название: {{ product.title | capitalize}}</p>
+            <p>Цена: ${{ product.price }}</p>
+            <p>Количество: <span data-id="{{ key.id }}" class="quantity">{{ product.quantity }}</span></p>
+            {% set order_sum = order_sum + (product.price * product.quantity) %}
+        </div>
+    {% endfor %}
+    <p>Сумма: ${{ order_sum }}</p>
+        {% if is_admin == true and selected_orders == 'all_orders' %}
+    ID клиента: {{ order.user }}
+    <div style="display: flex; position: relative; flex-direction: row; height: 100px; margin-top: 20px; align-items: center">
+    <form method="post" action="javascript:null;" class="statuses">
+    <select name="order_status">
+    <option {% if order.status == 'send' %} selected {% endif %} value="send">Заказ отправлен</option>
+    <option {% if order.status == 'get' %} selected {% endif %} value="get">Заказ оформлен</option>
+    <option {% if order.status == 'in_progress' %} selected {% endif %} value="in_progress">Заказ обрабатывается</option>
+    </select>
+    <input type="submit" value="Изменить статус" id="change_status" data-id="{{ order.id }}">
+    <p class="status_change" data-status_id="{{ order.id }}" style="position: absolute; left: 310px; top: 17px"></p>
+</form>
+    </div>
+    {% else %}
+        <p>Статус: {% if order.status == 'get' %} Заказ оформлен {% elseif order.status == 'send' %} Заказ отправлен
+         {% elseif order.status == 'in_progress'%} Заказ обрабатывается {% endif %}</p>
+    {% endif %}
+    <hr>
+{% endfor %}
+    {% else %}
+    <h3 style="text-align: center; margin-top: 150px;">Авторизуйтесь, чтобы увидеть список заказов</h3>
+    <form action="/auth/login/" method="post" style="text-align: center">
+    <input type="text" name="login" placeholder="Логин">
+    <input type="text" name="password" placeholder="Пароль">
+    <input type="submit" name="submit" value="Войти">
+</form>
+    {% endif %}
